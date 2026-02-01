@@ -43,6 +43,29 @@ def get_products(db: Session = Depends(get_db)):
         return datas
 
 # getting product by ID
-@app.get('products/{id}')
+@app.get('/products/{id}')
 def get_product_by_id(id:int, db: Session = Depends(get_db)):
-    product = db.query(DBM.Produc)
+    product = db.query(DBM.Product).filter(DBM.Product.id == id).first()
+    if product is None:
+        return {'message': 'Product not found'}
+    return product
+
+
+# getting product by ID
+@app.put('/products/{id}')
+def edit_product_by_id(id:int, product: Product, db: Session = Depends(get_db)):
+    product_in_db = db.query(DBM.Product).filter(DBM.Product.id == id).first()
+    if product_in_db is not None:
+        product_in_db = product
+        db.commit()
+        return {'Product': product_in_db}
+    return {'message': 'Product not found'}
+
+@app.delete('/products/{id}')
+def delete_product_by_id(id:int, db: Session = Depends(get_db)):
+    product = db.query(DBM.Product).filter(DBM.Product.id == id).first()
+    if product is None:
+        return {'message': 'Product not found'}
+    product.delete()
+    db.commit()
+    return {'message': 'Product deleted'}
