@@ -63,7 +63,7 @@ def edit_product_by_id(id:int, product: Product, db: Session = Depends(get_db)):
 
 @app.delete('/products/{id}')
 def delete_product_by_id(id:int, db: Session = Depends(get_db)):
-    product = db.query(DBM.Product).filter(DBM.Product.id == id).first()
+    product = db.query(DBM.Product).filter(DBM.Product.id == id)
     if product is None:
         return {'message': 'Product not found'}
     product.delete()
