@@ -3,7 +3,7 @@ from fastapi.params import Depends
 from sqlalchemy.orm import Session
 from database import session, engine
 from database_models import Base
-import database_models
+import database_models as DBM
 from models import Product
 
 app = FastAPI()
@@ -17,10 +17,10 @@ products = [
 ]
 def init_db():
     db = session()
-    count = db.query(database_models.Product).count()
+    count = db.query(DBM.Product).count()
     if count == 0 :
         for product in products:
-            db.add(database_models.Product(**product.model_dump()))
+            db.add(DBM.Product(**product.model_dump()))
         db.commit()
 
 init_db()
@@ -36,8 +36,13 @@ def get_db():
 # fetching all products
 @app.get('/products')
 def get_products(db: Session = Depends(get_db)):
-    if db.query(database_models.Product).count() == 0:
+    if db.query(DBM.Product).count() == 0:
         return {'message': 'No product found'}
     else:
-        datas = db.query(database_models.Product).all()
+        datas = db.query(DBM.Product).all()
         return datas
+
+# getting product by ID
+@app.get('products/{id}')
+def get_product_by_id(id:int, db: Session = Depends(get_db)):
+    product = db.query(DBM.Produc)
