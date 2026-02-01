@@ -14,10 +14,19 @@ products = [
 ]
 def init_db():
     db = session()
-    for product in products:
-        db.add(database_models.Product(**product.model_dump()))
-    db.commit()
+    count = db.query(database_models.Product).count()
+    if count == 0 :
+        for product in products:
+            db.add(database_models.Product(**product.model_dump()))
+        db.commit()
 
+# a singleton db getter for dependecy injection
+def get_db():
+    db = session()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # fetching all products
 @app.get('/products')
