@@ -68,25 +68,7 @@ python -m pip install -r requirements.txt
 
 ---
 
-## 🔐 Variables d'environnement
 
-Créer un fichier `.env` à partir de l'exemple :
-
-```bash
-cp .env.example .env
-```
-
-### Exemple `.env`
-
-```env
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=fastapi_db
-DB_USER=root
-DB_PASSWORD=password
-```
-
----
 
 ## 🗄️ Base de données
 
