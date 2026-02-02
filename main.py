@@ -51,7 +51,7 @@ def get_product_by_id(id:int, db: Session = Depends(get_db)):
     return product
 
 
-# getting product by ID
+# editing product by ID
 @app.put('/products/{id}')
 def edit_product_by_id(id:int, product: Product, db: Session = Depends(get_db)):
     product_in_db = db.query(DBM.Product).filter(DBM.Product.id == id).first()
@@ -61,6 +61,8 @@ def edit_product_by_id(id:int, product: Product, db: Session = Depends(get_db)):
         return {'Product': product_in_db}
     return {'message': 'Product not found'}
 
+
+# deleting product by ID
 @app.delete('/products/{id}')
 def delete_product_by_id(id:int, db: Session = Depends(get_db)):
     product = db.query(DBM.Product).filter(DBM.Product.id == id)
